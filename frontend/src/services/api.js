@@ -2,7 +2,19 @@
  * Centralized API service with token injection and 401 response handling.
  */
 
-const API_BASE = import.meta.env.VITE_API_URL || "/api/v1";
+const getApiBase = () => {
+  const envUrl = import.meta.env.VITE_API_URL;
+  if (!envUrl) {
+    return "/api/v1";
+  }
+  let cleaned = envUrl.trim().replace(/\/+$/, "");
+  if (!cleaned.endsWith("/api/v1")) {
+    cleaned = `${cleaned}/api/v1`;
+  }
+  return cleaned;
+};
+
+const API_BASE = getApiBase();
 
 let onUnauthorizedCallback = null;
 
