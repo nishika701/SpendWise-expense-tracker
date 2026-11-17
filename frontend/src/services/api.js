@@ -8,6 +8,12 @@ const getApiBase = () => {
     return "/api/v1";
   }
   let cleaned = envUrl.trim().replace(/\/+$/, "");
+
+  // If protocol is missing (e.g. user entered domain.up.railway.app), prepend https://
+  if (!cleaned.startsWith("http://") && !cleaned.startsWith("https://") && !cleaned.startsWith("/")) {
+    cleaned = `https://${cleaned}`;
+  }
+
   if (!cleaned.endsWith("/api/v1")) {
     cleaned = `${cleaned}/api/v1`;
   }
